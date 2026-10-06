@@ -1,10 +1,9 @@
 # Camp 1 — Proxmox Foundation
 
-**Date:** 2026-10-06
-**Status:** ✅ Complete
-**Goal:** Turn a used Dell OptiPlex into a headless Proxmox VE hypervisor I manage from my laptop's browser.
-**Finish line:** Web UI reachable on a static IP, system updated, tiered storage provisioned.
-
+- **Date:** 2026-10-06
+- **Status:** ✅ Complete
+- **Goal:** Turn a used Dell OptiPlex into a headless Proxmox VE hypervisor I manage from my laptop's browser.
+- **Finish line:** Web UI reachable on a static IP, system updated, tiered storage provisioned.
 ---
 
 ## Hardware
