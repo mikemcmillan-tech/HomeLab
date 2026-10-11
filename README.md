@@ -43,7 +43,7 @@ flowchart LR
 | 1 | Proxmox foundation | ✅ Done | BIOS/UEFI, hypervisor install, static IP, apt repos, tiered storage, S.M.A.R.T. | [camp-1-proxmox.md](camp-1-proxmox.md) |
 | 2A | First Linux VM | ✅ Done | VM sizing, Ubuntu Server install, SSH, LVM online resize, guest agent, snapshots | [camp-2-session-a.md](camp-2-session-a.md) |
 | 2B/C | Static IP + hardening | ✅ Done | netplan, ed25519 keys, password/root login disabled, UFW default-deny, auto-patching | [camp-2-sessions-b-c.md](camp-2-sessions-b-c.md) |
-| 3 | Tailscale remote access | ⏳ Next | VPN/overlay networking, zero-trust access | — |
+| 3 | Tailscale remote access | ✅ Done | WireGuard mesh VPN, zero open ports, SSO + 2FA | [camp-3-tailscale.md](camp-3-tailscale.md) |
 | 4 | Jellyfin media server | Planned | LXC containers, iGPU passthrough, storage | — |
 | 5 | AdGuard Home | Planned | DNS, network-wide filtering, rollback planning | — |
 | 6 | Home Assistant | Planned | IoT integration | — |
