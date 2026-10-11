@@ -1,7 +1,7 @@
-# Camp 3, Session 1: Tailscale Remote Access
+# Camp 3: Tailscale Remote Access
 
 - **Date:** 2026-10-10
-- **Status:** ✅ Session 1 complete
+- **Status:** ✅ Complete (Session 1 + Session 2)
 - **Goal:** Reach the Proxmox host from anywhere without opening any ports on the home router.
 - **Finish line:** Proxmox web UI loaded on my phone over cellular (Wi-Fi off) via Tailscale.
 
@@ -61,6 +61,44 @@ Identity provider: GitHub (2FA enabled with an authenticator app).
 - **Identity is the perimeter:** whoever controls the SSO account controls the network, so 2FA is non-negotiable.
 - **Bottom-up troubleshooting:** physical → network → service → auth. Two "timeouts" today had two different causes.
 
-## Next: Session 2, Subnet Router
+---
 
-Enable IP forwarding on `pve` and advertise `10.0.0.0/24` so the whole lab (e.g., `ubuntu-01`) is reachable remotely without installing Tailscale on every VM.
+## Session 2: Subnet Router
+
+**Goal:** reach the entire home LAN remotely through `pve`, without installing Tailscale on every VM.
+
+**How it works:** remote device → Tailscale tunnel → `pve` → forwards onto `10.0.0.0/24`.
+
+1. Enabled IP forwarding persistently:
+   ```bash
+   echo 'net.ipv4.ip_forward = 1' > /etc/sysctl.d/99-tailscale.conf
+   echo 'net.ipv6.conf.all.forwarding = 1' >> /etc/sysctl.d/99-tailscale.conf
+   sysctl -p /etc/sysctl.d/99-tailscale.conf
+   ```
+2. Advertised the home subnet:
+   ```bash
+   tailscale set --advertise-routes=10.0.0.0/24
+   ```
+3. Approved the route in the admin console (Machines → pve → Edit route settings). Approval is a security gate: a device can *request* to be a router, but only the admin can *allow* it.
+
+| Test | Result |
+|---|---|
+| Phone on 5G → Proxmox at its **LAN** IP `https://10.0.0.250:8006` | ✅ Loaded through the subnet route |
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| LAN IP hung on the phone | Route advertised but not yet approved; devices still show "Connected" | Approved `10.0.0.0/24` in the admin console |
+
+**Rollback:** `tailscale set --advertise-routes=` and remove `/etc/sysctl.d/99-tailscale.conf`.
+
+---
+
+## Camp 3 Summary
+
+- **Status:** ✅ Complete
+- **Skills:** VPN / overlay networking, WireGuard, routing, IP forwarding, subnet advertisement, SSO + MFA, zero-trust access, bottom-up troubleshooting
+- **Cert mapping:** Network+ (VPN, routing, OSI troubleshooting) · Security+ (zero trust, MFA, credential rotation) · Linux+ (sysctl, systemd) · AWS (VPC routing, VPN gateway, bastion concepts)
+
+## Next: Camp 4, Jellyfin
+
+Media server in an LXC container with iGPU transcoding. Stream to TV, phone, and laptop.
