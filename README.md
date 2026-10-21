@@ -46,8 +46,8 @@ flowchart LR
 | 2A | First Linux VM | ✅ Done | VM sizing, Ubuntu Server install, SSH, LVM online resize, guest agent, snapshots | [camp-2-session-a.md](camp-2-session-a.md) |
 | 2B/C | Static IP + hardening | ✅ Done | netplan, ed25519 keys, password/root login disabled, UFW default-deny, auto-patching | [camp-2-sessions-b-c.md](camp-2-sessions-b-c.md) |
 | 3 | Tailscale remote access | ✅ Done | WireGuard mesh VPN, subnet router, IP forwarding, SSO + MFA, zero open ports | [camp-3-tailscale.md](camp-3-tailscale.md) |
-| 4 | Jellyfin media server | ⏳ Sessions 1–2 done | Unprivileged LXC, bind mounts, iGPU passthrough, DNS troubleshooting, installer verification | [camp-4-jellyfin.md](camp-4-jellyfin.md) |
-| 5 | AdGuard Home | Planned | DNS, network-wide filtering, rollback planning | — |
+| 4 | Jellyfin media server | ✅ Done | Unprivileged LXC, bind mounts, iGPU passthrough, QuickSync transcoding, DNS troubleshooting | [camp-4-jellyfin.md](camp-4-jellyfin.md) |
+| 5 | AdGuard Home | ⏳ Next | DNS, network-wide filtering, rollback planning | — |
 | 6 | Home Assistant | Planned | IoT integration | — |
 | 7 | Backups + Immich | Planned | Backup strategy, self-hosted photos | — |
 | 8 | Docker host | Planned | Containers, app hosting | — |
