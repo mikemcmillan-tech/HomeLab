@@ -23,8 +23,9 @@ Every project is documented as a **camp**: goal, build steps, verification, trou
 | `pve` | `10.0.0.250` (static) | Proxmox host, web UI on `:8006` |
 | `ubuntu-01` (VM 100) | `10.0.0.240` (static) | Hardened Linux server |
 | `jellyfin` (CT 101) | `10.0.0.241` (static) | Jellyfin media server, `:8096` |
+| PVE --- CT102[adguard LXC<br/>10.0.0.242<br/>DNS filtering]
 | Reserved for VMs/containers | `10.0.0.240–.249` | |
-
+| `adguard` (CT 102) | `10.0.0.242` (static) | AdGuard Home DNS filtering, `:53` / `:80` 
 ```mermaid
 flowchart LR
     Internet((Internet)) --- Router[ISP Router<br/>10.0.0.1]
@@ -47,7 +48,7 @@ flowchart LR
 | 2B/C | Static IP + hardening | ✅ Done | netplan, ed25519 keys, password/root login disabled, UFW default-deny, auto-patching | [camp-2-sessions-b-c.md](camp-2-sessions-b-c.md) |
 | 3 | Tailscale remote access | ✅ Done | WireGuard mesh VPN, subnet router, IP forwarding, SSO + MFA, zero open ports | [camp-3-tailscale.md](camp-3-tailscale.md) |
 | 4 | Jellyfin media server | ✅ Done | Unprivileged LXC, bind mounts, iGPU passthrough, QuickSync transcoding, DNS troubleshooting | [camp-4-jellyfin.md](camp-4-jellyfin.md) |
-| 5 | AdGuard Home | ⏳ Next | DNS, network-wide filtering, rollback planning | — |
+| 5 | AdGuard Home | ⏳ Sessions 1–2 done and link the doc: [camp-5-adguard.md](camp-5-adguard.md) |
 | 6 | Home Assistant | Planned | IoT integration | — |
 | 7 | Backups + Immich | Planned | Backup strategy, self-hosted photos | — |
 | 8 | Docker host | Planned | Containers, app hosting | — |
