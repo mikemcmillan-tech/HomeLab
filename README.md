@@ -1,6 +1,6 @@
 # HomeLab
 
-A self-built Proxmox homelab I use as hands-on training for **CompTIA A+, Network+, Linux+, Security+** and **AWS** — and as the foundation for real services at home (media, DNS filtering, remote access, IoT).
+A self-built Proxmox homelab I use as hands-on training for **CompTIA A+, Network+, Linux+, Security+** and **AWS**, and as the foundation for real services at home (media, DNS filtering, remote access, IoT).
 
 Every project is documented as a **camp**: goal, build steps, verification, troubleshooting log, and lessons learned.
 
@@ -10,9 +10,9 @@ Every project is documented as a **camp**: goal, build steps, verification, trou
 
 | Device | Role | Specs |
 |---|---|---|
-| Dell OptiPlex 5050 SFF | Proxmox VE host | Intel i5-6500 (4C, VT-x/VT-d), 16 GB DDR4 |
-| ↳ 256 GB Samsung NVMe | Host OS + VM disks (`local-lvm`) | Fast tier |
-| ↳ 1 TB Toshiba HDD | ISOs, backups, templates (`hdd-storage`) | Capacity tier, S.M.A.R.T. verified |
+| Dell OptiPlex 5050 SFF | Proxmox VE host | Intel i5-6500 (4C, VT-x/VT-d, QuickSync), 16 GB DDR4 |
+| ↳ 256 GB Samsung NVMe | Host OS + VM/container disks (`local-lvm`) | Fast tier |
+| ↳ 1 TB Toshiba HDD | ISOs, templates, backups, media (`hdd-storage`) | Capacity tier, S.M.A.R.T. verified |
 | Cisco managed switch | VLAN lab (future camp) | Held until segmentation phase |
 
 ## Network
@@ -20,12 +20,12 @@ Every project is documented as a **camp**: goal, build steps, verification, trou
 | Host | IP | Purpose |
 |---|---|---|
 | Router / gateway | `10.0.0.1` | ISP gateway, DHCP |
-| `pve` | `10.0.0.250` (static) | Proxmox host, web UI on `:8006` |
+| `pve` | `10.0.0.250` (static) | Proxmox host, web UI on `:8006`, Tailscale subnet router |
 | `ubuntu-01` (VM 100) | `10.0.0.240` (static) | Hardened Linux server |
 | `jellyfin` (CT 101) | `10.0.0.241` (static) | Jellyfin media server, `:8096` |
-| PVE --- CT102[adguard LXC<br/>10.0.0.242<br/>DNS filtering]
+| `adguard` (CT 102) | `10.0.0.242` (static) | AdGuard Home DNS filtering, `:53` / `:80` |
 | Reserved for VMs/containers | `10.0.0.240–.249` | |
-| `adguard` (CT 102) | `10.0.0.242` (static) | AdGuard Home DNS filtering, `:53` / `:80` 
+
 ```mermaid
 flowchart LR
     Internet((Internet)) --- Router[ISP Router<br/>10.0.0.1]
@@ -33,9 +33,11 @@ flowchart LR
     Router --- PVE[Proxmox host 'pve'<br/>10.0.0.250]
     PVE --- VM100[ubuntu-01<br/>10.0.0.240<br/>key-only SSH · UFW]
     PVE --- CT101[jellyfin LXC<br/>10.0.0.241:8096<br/>iGPU · media on HDD]
+    PVE --- CT102[adguard LXC<br/>10.0.0.242<br/>DNS filtering · DoH]
+    Remote[Phone / laptop<br/>anywhere] -. Tailscale .-> PVE
 ```
 
-**Security posture:** no ports forwarded, no DMZ. Remote access runs over Tailscale (WireGuard): `pve` acts as a subnet router for `10.0.0.0/24`, gated by GitHub SSO with MFA. Zero inbound ports on the router.
+**Security posture:** no ports forwarded, no DMZ. Remote access runs over Tailscale (WireGuard): `pve` acts as a subnet router for `10.0.0.0/24`, gated by GitHub SSO with MFA. Services bind to their LAN addresses only. Tailscale pushes AdGuard as DNS to my devices, so they get filtering anywhere without touching the household network.
 
 ---
 
@@ -48,28 +50,31 @@ flowchart LR
 | 2B/C | Static IP + hardening | ✅ Done | netplan, ed25519 keys, password/root login disabled, UFW default-deny, auto-patching | [camp-2-sessions-b-c.md](camp-2-sessions-b-c.md) |
 | 3 | Tailscale remote access | ✅ Done | WireGuard mesh VPN, subnet router, IP forwarding, SSO + MFA, zero open ports | [camp-3-tailscale.md](camp-3-tailscale.md) |
 | 4 | Jellyfin media server | ✅ Done | Unprivileged LXC, bind mounts, iGPU passthrough, QuickSync transcoding, DNS troubleshooting | [camp-4-jellyfin.md](camp-4-jellyfin.md) |
-| 5 | AdGuard Home | ⏳ Sessions 1–2 done and link the doc: [camp-5-adguard.md](camp-5-adguard.md) |
-| 6 | Home Assistant | Planned | IoT integration | — |
-| 7 | Backups + Immich | Planned | Backup strategy, self-hosted photos | — |
+| 5 | AdGuard Home | ✅ Done | DNS filtering, DoH, LAN-only binding, Tailscale split DNS, CLI container builds, staged rollout | [camp-5-adguard.md](camp-5-adguard.md) |
+| 6 | Home Assistant | ⏳ Next | IoT integration | — |
+| 7 | Backups + Immich | Planned | Backup strategy, retention, thin pool monitoring, self-hosted photos | — |
 | 8 | Docker host | Planned | Containers, app hosting | — |
 | 9 | Cisco switch + VLANs | Planned | Segmentation, 802.1Q, inter-VLAN firewalling | — |
 | 10 | AWS hybrid | Planned | Cloud + on-prem integration | — |
+
+Quick command reference: [cheatsheet.md](cheatsheet.md)
 
 ---
 
 ## Highlights
 
-- **Verify before acting:** SHA-256 checksums on every ISO; caught a wrong-architecture (ARM64) download before flashing.
-- **Change safely:** snapshots before risky changes; `netplan try` auto-rollback for network changes; `sshd -t` config test before restarting SSH.
-- **Troubleshoot, don't reinstall:** resolved an antivirus driver blocking USB writes, a fast-boot menu issue, a mis-selected repository, and an SSH auth failure, each isolated layer by layer.
-- **Least privilege:** normal user + `sudo`, key-only SSH, no root login, default-deny firewall.
+- **Verify before acting:** SHA-256 checksums on every ISO and installer script; caught a wrong-architecture (ARM64) download before flashing.
+- **Change safely:** snapshots before risky changes; `netplan try` auto-rollback; `sshd -t` before restarting SSH; config backups before edits; staged rollouts with a written rollback.
+- **Troubleshoot, don't reinstall:** isolated issues layer by layer, including a USB-blocking antivirus driver, inherited Tailscale DNS breaking a container, a paused terminal (XOFF) stalling `apt`, and Windows NRPT making `nslookup` disagree with real apps.
+- **Least privilege + small attack surface:** key-only SSH, no root password login, default-deny firewall, unprivileged containers, services bound to LAN addresses only, zero open router ports.
 
 ## Lessons Learned
 
 - Read the config before you edit it. Filenames and defaults aren't always what you expect.
 - A passing test can pass for the wrong reason (e.g., `ping` succeeding over IPv6, not IPv4). Check *which path* it took.
-- Always check the prompt: `PS C:\` is the laptop, `mike@ubuntu-01` is the server.
+- Always check the prompt: `PS C:\` is the laptop, `root@pve` is the host, `root@jellyfin` is a container.
 - Change → verify. "I updated it" means nothing until the output proves it.
+- When something breaks, ask what changed recently, even somewhere else.
 
 ---
 
