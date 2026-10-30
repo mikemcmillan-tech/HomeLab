@@ -1,7 +1,7 @@
 # Camp 5: AdGuard Home (Network DNS Filtering)
 
-- **Dates:** 2026-10-29 →
-- **Status:** ⏳ In progress. Sessions 1–2 done; Session 3 (device rollout) next
+- **Dates:** 2026-10-29 → 2026-10-30
+- **Status:** ✅ Complete
 - **Goal:** Block ads and trackers at the DNS level, without risking the household's internet.
 - **Finish line:** Blocked domains return `0.0.0.0`, and my phone gets filtering on cellular through Tailscale.
 
@@ -96,8 +96,41 @@ Testing with `nslookup <name> 10.0.0.242` queries AdGuard directly without chang
 - **Change rings / blast radius:** roll out to yourself first, then expand.
 - **Infrastructure as commands:** a CLI `pct create` is repeatable and documentable in a way GUI clicks aren't.
 
-## Next: Session 3
+## Session 3: Rollout via Tailscale DNS
 
-- Ring 1: point my laptop's DNS at `10.0.0.242`, with a rollback.
-- Ring 2: set AdGuard as the DNS server for my tailnet so my phone filters on cellular.
-- Review the query log and allowlist anything that breaks.
+I was working from the gym (a different network, DNS `10.0.100.254`), so I skipped the manual Ring 1 test. Hard-coding a home DNS server on a laptop that travels breaks name resolution whenever the tunnel is down. Tailscale DNS is the right tool for roaming devices.
+
+1. **Proved the path first:** `nslookup doubleclick.net 10.0.0.242` from the gym returned `0.0.0.0`, which proves laptop → Tailscale → pve subnet router → CT 102 works.
+2. **Tailscale admin → DNS:** added `10.0.0.242` as a global nameserver and turned on **Override local DNS**.
+3. **Verified on the laptop** with `Resolve-DnsName` (not `nslookup`):
+
+   | | Before | After |
+   |---|---|---|
+   | `doubleclick.net` | `142.251.45.142` (TTL 252) | `0.0.0.0` / `::` (TTL 10, AdGuard's blocked-answer TTL) |
+4. **Verified on the phone over cellular (Wi-Fi off):** loaded the AdGuard dashboard at `10.0.0.242` through the tunnel. 137 queries, 24 blocked (18%).
+
+**Why it's safe:** only devices with Tailscale *on* use AdGuard. Tailscale off = normal DNS. The Proxmox host has `accept-dns=false`, so the subnet router never depends on the DNS server it's routing to.
+
+**Rollback:** remove `10.0.0.242` from Tailscale's global nameservers (or turn off Override local DNS). All devices revert within seconds.
+
+| Symptom | Diagnosis | Fix |
+|---|---|---|
+| `Set-DnsClientServerAddress`: `PermissionDenied` | PowerShell wasn't elevated | Run as administrator (ended up not needed) |
+| `nslookup` still showed the gym's DNS after Tailscale DNS was enabled | Tailscale on Windows uses **NRPT** rules; `nslookup` bypasses the Windows resolver and queries the adapter's DNS directly | Tested with `Resolve-DnsName`, which uses the same resolver path as apps |
+| All queries in AdGuard come from `10.0.0.250` | The subnet router **SNATs** tailnet traffic, so AdGuard sees pve, not each device | Expected; per-device stats would need Tailscale on each client using its 100.x IP, or disabling SNAT (later) |
+
+---
+
+## Camp 5 Summary
+
+- **Skills:** DNS resolution and sinkholing, ports 53/80, DNS over HTTPS, IPv6 exposure and interface binding, Proxmox CLI container builds, thin provisioning, split/overlay DNS via Tailscale, Windows NRPT, NAT/SNAT, staged rollouts with rollback
+- **Cert mapping:**
+  - **A+:** client DNS configuration, `nslookup` vs `Resolve-DnsName`, Windows networking troubleshooting
+  - **Network+:** DNS records and resolution, ports 53/80, IPv6 addressing (no NAT), NAT/SNAT, VPN split DNS, troubleshooting methodology
+  - **Linux+:** `pct`/`pveam` CLI, systemd, `ss`, editing YAML config with `sed`, `timedatectl`, LVM thin pools
+  - **Security+:** attack surface reduction (bind to LAN only), DNS amplification risk, encrypted DNS (DoH), defense in depth, change management with rollback
+  - **AWS:** Route 53 Resolver / private DNS concepts, security groups vs. binding, infrastructure as code mindset (CLI over console)
+
+## Next: Open Issues
+
+Move the repo out of OneDrive, give the new laptop its own SSH key and retire the old laptop, then Camp 6.
