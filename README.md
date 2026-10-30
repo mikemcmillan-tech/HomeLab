@@ -57,6 +57,12 @@ flowchart LR
 | 9 | Cisco switch + VLANs | Planned | Segmentation, 802.1Q, inter-VLAN firewalling | — |
 | 10 | AWS hybrid | Planned | Cloud + on-prem integration | — |
 
+### Ops / Maintenance
+
+| Date | Task | Write-up |
+|---|---|---|
+| 2026-10-30 | SSH key rotation + retired device revocation | [ops-ssh-key-rotation.md](ops-ssh-key-rotation.md) |
+
 Quick command reference: [cheatsheet.md](cheatsheet.md)
 
 ---
