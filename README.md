@@ -61,6 +61,7 @@ flowchart LR
 
 | Date | Task | Write-up |
 |---|---|---|
+| 2026-10-28 | Host recovery, new admin workstation, maintenance | [ops-2026-10-28-recovery-and-maintenance.md](ops-2026-10-28-recovery-and-maintenance.md) |
 | 2026-10-30 | SSH key rotation + retired device revocation | [ops-ssh-key-rotation.md](ops-ssh-key-rotation.md) |
 
 Quick command reference: [cheatsheet.md](cheatsheet.md)
