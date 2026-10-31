@@ -79,7 +79,6 @@
 
 - Verified installer integrity with SHA256
 - No ports forwarded, no DMZ — server is reachable only on the home LAN
-- A reused password was flagged in a known breach → rotating it
 - Credentials live in a password manager only (never on paper)
 
 ## Lessons Learned
