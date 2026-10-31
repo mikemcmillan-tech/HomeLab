@@ -102,3 +102,7 @@ Identity provider: GitHub (2FA enabled with an authenticator app).
 ## Next: Camp 4, Jellyfin
 
 Media server in an LXC container with iGPU transcoding. Stream to TV, phone, and laptop.
+
+## Screenshots
+
+![Tailscale machines: pve as subnet router, phone and laptop on the tailnet](images/camp3-tailscale-machines.png)

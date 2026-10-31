@@ -118,3 +118,7 @@
 ## Next: Camp 5, AdGuard Home
 
 First fix: decide how `pve` handles DNS now that Tailscale manages its `resolv.conf`. Then network-wide ad blocking with a full rollback plan before touching the house's DNS.
+
+## Screenshots
+
+![Jellyfin home screen with the Fights library](images/camp4-jellyfin-library.png)

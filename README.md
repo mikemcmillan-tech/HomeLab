@@ -15,6 +15,8 @@ Every project is documented as a **camp**: goal, build steps, verification, trou
 | ↳ 1 TB Toshiba HDD | ISOs, templates, backups, media (`hdd-storage`) | Capacity tier, S.M.A.R.T. verified |
 | Cisco managed switch | VLAN lab (future camp) | Held until segmentation phase |
 
+![Proxmox host summary: all guests running](images/proxmox-summary.png)
+
 ## Network
 
 | Host | IP | Purpose |
