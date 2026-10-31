@@ -27,10 +27,12 @@ Each build is a **camp**: one focused project with a clear goal, a finish line, 
 | 1 | Proxmox foundation: BIOS, install, repos, storage | ✅ Complete | [camp-1-proxmox.md](camp-1-proxmox.md) |
 | 2A | First Linux VM: Ubuntu Server, SSH, updates, LVM extend, snapshot | ✅ Complete | [camp-2-session-a.md](camp-2-session-a.md) |
 | 2B–C | Static IP (netplan) and SSH/host hardening: key-only SSH, UFW, unattended upgrades | ✅ Complete | [camp-2-sessions-b-c.md](camp-2-sessions-b-c.md) |
-| 3 | Tailscale: secure remote access to the lab | 🟡 Running · write-up in progress | — |
-| 4 | AdGuard Home: network-wide DNS filtering | 🟡 Running · write-up in progress | — |
-| 5 | VLAN segmentation on a Cisco managed switch | ⏭️ Next | — |
-| 6 | Windows Server / Active Directory | ⏭️ Planned | — |
+| 3 | Tailscale: secure remote access to the lab | ✅ Complete | [camp-3-tailscale.md](camp-3-tailscale.md) |
+| 4 | Jellyfin: self-hosted media server | ✅ Complete | [camp-4-jellyfin.md](camp-4-jellyfin.md) |
+| 5 | AdGuard Home: network-wide DNS filtering | ✅ Complete | [camp-5-adguard.md](camp-5-adguard.md) |
+| Ops | Recovery and maintenance log (2026-10-28) | ✅ Complete | [ops-2026-10-28-recovery-and-maintenance.md](ops-2026-10-28-recovery-and-maintenance.md) |
+| 6 | VLAN segmentation on a Cisco managed switch | ⏭️ Next | — |
+| 7 | Windows Server / Active Directory | ⏭️ Planned | — |
  
 ---
  
