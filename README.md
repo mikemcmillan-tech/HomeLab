@@ -46,5 +46,5 @@ Each build is a **camp**: one focused project with a clear goal, a finish line, 
  
 ## 🛠️ Skills Practiced
  
-Proxmox VE · Virtualization · Ubuntu Server · Linux CLI · SSH (key-based auth) · UFW firewall · netplan / static IP · LVM · Snapshots & backups · Tailscale · AdGuard Home / DNS · Troubleshooting & documentation
-*Built alongside a B.S. in Cloud & Network Engineering (AWS track) at WGU.*
+Proxmox VE · Virtualization · Ubuntu Server · Linux CLI · SSH (key-based auth) · UFW firewall · netplan / static IP · LVM · Snapshots & backups · Tailscale · Jellyfin · AdGuard Home / DNS · Troubleshooting & documentation
+
