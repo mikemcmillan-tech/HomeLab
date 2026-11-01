@@ -78,8 +78,7 @@
 ## Security Notes
 
 - Verified installer integrity with SHA256
-- No ports forwarded, no DMZ — server is reachable only on the home LAN
-- Credentials live in a password manager only (never on paper)
+- No ports forwarded, no DMZ — server is reachable only on the home LAN 
 
 ## Lessons Learned
 
