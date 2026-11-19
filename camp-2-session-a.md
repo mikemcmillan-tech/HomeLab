@@ -1,4 +1,4 @@
-# Camp 2, Session A: First Linux VM (ubuntu-01)
+# Camp 2, Session A: Ubuntu Server Deployment
 
 - **Date:** 2026-10-07
 - **Status:** ✅ Session A complete
