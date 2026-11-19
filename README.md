@@ -24,7 +24,7 @@ Each build is a **camp**: one focused project with a clear goal, a finish line, 
  
 | Camp | Project | Status | Docs |
 |---|---|---|---|
-| 1 | Proxmox foundation: BIOS, install, repos, storage | ✅ Complete | [camp-1-proxmox.md](camp-1-proxmox.md) |
+| 1 | Proxmox hypervisor setup: BIOS, install, repos, storage | ✅ Complete | [camp-1-proxmox.md](camp-1-proxmox.md) |
 | 2A | First Linux VM: Ubuntu Server, SSH, updates, LVM extend, snapshot | ✅ Complete | [camp-2-session-a.md](camp-2-session-a.md) |
 | 2B–C | Static IP (netplan) and SSH/host hardening: key-only SSH, UFW, unattended upgrades | ✅ Complete | [camp-2-sessions-b-c.md](camp-2-sessions-b-c.md) |
 | 3 | Tailscale: secure remote access to the lab | ✅ Complete | [camp-3-tailscale.md](camp-3-tailscale.md) |
