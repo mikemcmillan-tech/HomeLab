@@ -1,4 +1,4 @@
-# Camp 2, Sessions B & C: Linus Server Hardening
+# Camp 2, Sessions B & C: Linux Server Hardening
 
 - **Dates:** 2026-10-08 → 2026-10-09
 - **Status:** ✅ Camp 2 complete
