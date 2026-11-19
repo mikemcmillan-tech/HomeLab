@@ -1,4 +1,4 @@
-# Camp 4: Jellyfin Media Server
+# Camp 4: Self-Hosted Media Server ( Jellyfin + GPU Transcoding)
 
 - **Dates:** 2026-10-19 → 2026-10-21
 - **Status:** ✅ Complete
