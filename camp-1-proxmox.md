@@ -1,4 +1,4 @@
-# Camp 1 — Proxmox Foundation
+# Camp 1 — Proxmox Hypervisor Setup
 
 - **Date:** 2026-10-06
 - **Status:** ✅ Complete
